@@ -60,10 +60,12 @@ function quoteRequestFailed(ticker, response) {
 
 // Selectors
 
-const quotes = (state) => state[NAME];
+const quotes = (state) => {
+  return state[NAME];
+};
 
-export const selector = createStructuredSelector({
-  quotes
+export const selector = (state) => ({
+  quotes: state.quotes
 });
 
 export const actionCreators = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 
-import App from './App';
+import App from 'components/App';
 import { QuotesView } from 'features/quotes';
 import NotFoundView from 'components/NotFound';
 

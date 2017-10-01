@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { actionCreators, selector } from './';
+import { actionCreators, selector} from './quotes';
 import QuotesLayout from './components/QuotesLayout/QuotesLayout';
 
 @connect(selector, (dispatch) => ({

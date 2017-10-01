@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
+
+import './Header.scss';
 
 export default class Header extends Component {
     static propTypes = {};
@@ -6,7 +9,9 @@ export default class Header extends Component {
     render () {
         return (
             <div className="header">
-                <p>Quoty</p>
+                <Link className="logo" to="/">
+                    Ticker
+                </Link>
             </div>
         )
     }
