@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import QuoteSelection from '../QuotesSelection';
 
 export default class QuotesLayout extends Component {
   static propTypes = {
@@ -8,8 +9,8 @@ export default class QuotesLayout extends Component {
 
   render() {
     return (
-      <div className="friendListApp">
-        <h1>Quoty</h1>
+      <div className="layout">
+        <QuoteSelection />
       </div>
     );
   }

@@ -11,7 +11,7 @@ import QuotesLayout from './components/QuotesLayout/QuotesLayout';
 export default class QuotesView extends Component {
   render() {
     return (
-      <div>
+      <div className="feature quotes">
         <QuotesLayout {...this.props} />
       </div>
     );

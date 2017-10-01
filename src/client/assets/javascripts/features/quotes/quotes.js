@@ -17,27 +17,34 @@ export const NAME = 'quotes';
 
 const initialState = {
   search: '',
-  loading: false,
-  loaded: false,
-  response: null
+  quote: {
+    loading: false,
+    loaded: false,
+    response: null
+  }
 };
 
 // Reducer
 
 export default function reducer(state = initialState, action = {}){
   const actions = {
+    [SEARCH_QUOTE_REQUEST]: () => {
+      return {
+        ...state,
+        search: action.search
+      }
+    }
   };
 
-  console.log(action);
   return (isFunction(actions[action.type])) ? actions[action.type]() : state
 }
 
 // Action Creators
 
-function quoteSearch(ticker) {
+function quoteSearch(search) {
   return {
     type: SEARCH_QUOTE_REQUEST,
-    ticker
+    search
   };
 }
 
