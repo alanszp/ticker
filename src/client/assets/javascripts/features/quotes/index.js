@@ -6,4 +6,6 @@ export {
   actionCreators,
   selector,
   NAME
-} from './friends';
+} from './quotes';
+
+export { default as QuotesView } from './QuotesView'
