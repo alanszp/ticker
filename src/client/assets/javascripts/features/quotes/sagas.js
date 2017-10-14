@@ -2,19 +2,30 @@
 
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import { actionCreators, actions } from './quotes'
+import * as QuoteService from '../../utils/QuoteService'
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* searchQuote(action) {
   try {
-    console.log('hola');
-    yield put(actionCreators.quoteRequestSucceed());
+    const quotes = yield call(QuoteService.search, action.search);
+    yield put(actionCreators.quoteRequestSucceed(action.search, quotes));
   } catch (e) {
-    yield put({type: "USER_FETCH_FAILED", message: e.message});
+    yield put(actionCreators.quoteRequestFailed(action.search, e));
   }
 }
 const saga = [
-  takeEvery(actions.SEARCH_QUOTE_REQUEST, searchQuote),
+  takeLatest(actions.SEARCH_QUOTE_REQUEST, searchQuote),
 ];
+
+function* watchSearch() {
+  let task;
+  while (true) {
+    const { input } = yield take(actions.SEARCH_QUOTE_REQUEST);
+    if (task) {
+      yield cancel(task)
+    }
+    task = yield fork(searchQuote, input)
+  }
+}
 
 
 export default saga;

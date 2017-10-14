@@ -2,11 +2,15 @@
 
 import { State } from 'models/friends';
 import isFunction from 'lodash/isFunction';
+import startsWith from 'lodash/startsWith';
 // Action Types
 
-const SEARCH_QUOTE_REQUEST = 'redux-app/quotes/SEARCH_QUOTE_REQUEST';
-const SEARCH_QUOTE_SUCCEED = 'redux-app/quotes/SEARCH_QUOTE_SUCCEED';
-const SEARCH_QUOTE_FAILED = 'redux-app/quotes/SEARCH_QUOTE_FAILED';
+const SEARCH_QUOTE_REQUEST = 'ticker/quotes/SEARCH_QUOTE_REQUEST';
+const SEARCH_QUOTE_SUCCEED = 'ticker/quotes/SEARCH_QUOTE_SUCCEED';
+const SEARCH_QUOTE_FAILED = 'ticker/quotes/SEARCH_QUOTE_FAILED';
+const GET_QUOTE_REQUEST = 'ticker/quotes/GET_QUOTE_REQUEST';
+const GET_QUOTE_SUCCEED = 'ticker/quotes/GET_QUOTE_SUCCEED';
+const GET_QUOTE_FAILED = 'ticker/quotes/GET_QUOTE_FAILED';
 
 // This will be used in our root reducer and selectors
 
@@ -15,27 +19,84 @@ export const NAME = 'quotes';
 // Define the initial state for `friends` module
 
 const initialState = {
-  search: '',
-  quote: {
+  search: {
+    term: '',
     loading: false,
     loaded: false,
-    response: null
+    items: null,
+    error: null
+  },
+  quote: {
+    ticker: null,
+    loading: false,
+    loaded: false,
+    info: null,
+    error: null
   }
 };
 
 // Reducer
-
-export default function reducer(state = initialState, action = {}){
-  const actions = {
-    [SEARCH_QUOTE_REQUEST]: () => {
-      return {
-        ...state,
-        search: action.search
+const reucers = {
+  [SEARCH_QUOTE_REQUEST]: (state, action) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        term: action.search,
+        loading: true,
+        loaded: false
       }
     }
-  };
+  },
 
-  return (isFunction(actions[action.type])) ? actions[action.type]() : state
+  [SEARCH_QUOTE_SUCCEED]: (state, action) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        loading: false,
+        loaded: true,
+        error: null,
+        items: action.items
+      }
+    }
+  },
+
+  [SEARCH_QUOTE_FAILED]: (state, action) => {
+    return {
+      ...state,
+      search: {
+        ...state.search,
+        loading: false,
+        loaded: false,
+        items: null,
+        error: action.error
+      }
+    }
+  },
+
+  '@@router/LOCATION_CHANGE': (state, action) => {
+      if (!startsWith(action.payload.pathname, '/quotes/')) {
+          return state;
+      }
+
+      let quote = action.payload.pathname.replace('/quotes/', '').toUpperCase();
+      return {
+          search: {
+              ...initialState.search,
+              term: quote
+          },
+          quote: {
+              ...initialState.quote,
+              ticker: quote,
+              loading: true
+          }
+      }
+  }
+};
+
+export default function reducer(state = initialState, action = {}){
+  return (isFunction(reucers[action.type])) ? reucers[action.type](state, action) : state
 }
 
 // Action Creators
@@ -48,20 +109,27 @@ function quoteSearch(search) {
 }
 
 
-function quoteRequestSucceed(ticker, response) {
+function quoteRequestSucceed(search, items) {
   return {
     type: SEARCH_QUOTE_SUCCEED,
-    ticker,
-    response
+    search,
+    items
   };
 }
 
-function quoteRequestFailed(ticker, response) {
+function quoteRequestFailed(search, error) {
   return {
     type: SEARCH_QUOTE_FAILED,
-    ticker,
-    response
+    search,
+    error
   };
+}
+
+function getQuote(ticker) {
+    return {
+        type: GET_QUOTE_REQUEST,
+        ticker
+    };
 }
 
 // Selectors
