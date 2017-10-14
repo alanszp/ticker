@@ -2,7 +2,6 @@
 
 import { State } from 'models/friends';
 import isFunction from 'lodash/isFunction';
-import { createStructuredSelector } from 'reselect';
 // Action Types
 
 const SEARCH_QUOTE_REQUEST = 'redux-app/quotes/SEARCH_QUOTE_REQUEST';
@@ -79,4 +78,10 @@ export const actionCreators = {
   quoteSearch,
   quoteRequestSucceed,
   quoteRequestFailed
+};
+
+export const actions = {
+  SEARCH_QUOTE_REQUEST,
+  SEARCH_QUOTE_SUCCEED,
+  SEARCH_QUOTE_FAILED
 };

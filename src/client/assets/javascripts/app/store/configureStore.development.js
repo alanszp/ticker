@@ -2,9 +2,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import promiseMiddleware from 'redux-promise';
 import createLogger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga'
 
 import rootReducer from '../reducer';
 import DevTools from '../DevTools';
+import rootSaga from '../saga'
 
 /**
  * Entirely optional.
@@ -13,8 +15,9 @@ import DevTools from '../DevTools';
  * with your standard DevTools monitor gives you great flexibility.
  */
 const logger = createLogger();
+const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [promiseMiddleware, logger, require('redux-immutable-state-invariant')()];
+const middlewares = [promiseMiddleware, logger, require('redux-immutable-state-invariant')(), sagaMiddleware];
 
 // By default we try to read the key from ?debug_session=<key> in the address bar
 const getDebugSessionKey = function () {
@@ -39,6 +42,8 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextReducer);
     });
   }
+
+  sagaMiddleware.run(rootSaga);
 
   return store;
 }
