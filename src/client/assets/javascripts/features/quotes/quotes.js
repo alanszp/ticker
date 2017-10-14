@@ -2,7 +2,6 @@
 
 import {State} from 'models/friends';
 import isFunction from 'lodash/isFunction';
-import startsWith from 'lodash/startsWith';
 // Action Types
 
 const SEARCH_QUOTE_REQUEST = 'ticker/quotes/SEARCH_QUOTE_REQUEST';
@@ -75,20 +74,15 @@ const reucers = {
         }
     },
 
-    '@@router/LOCATION_CHANGE': (state, action) => {
-        if (!startsWith(action.payload.pathname, '/quotes/')) {
-            return state;
-        }
-
-        let quote = action.payload.pathname.replace('/quotes/', '').toUpperCase();
+    [GET_QUOTE_REQUEST]: (state, action) => {
         return {
             search: {
                 ...initialState.search,
-                term: quote
+                term: action.ticker
             },
             quote: {
                 ...initialState.quote,
-                ticker: quote,
+                ticker: action.ticker,
                 loading: true
             }
         }
@@ -145,7 +139,8 @@ export const selector = (state) => ({
 export const actionCreators = {
     quoteSearch,
     quoteRequestSucceed,
-    quoteRequestFailed
+    quoteRequestFailed,
+    getQuote
 };
 
 export const actions = {

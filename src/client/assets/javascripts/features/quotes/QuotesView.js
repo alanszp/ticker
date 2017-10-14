@@ -5,7 +5,9 @@ import {bindActionCreators} from 'redux';
 import {actionCreators, selector} from './quotes';
 import QuotesLayout from './components/QuotesLayout/QuotesLayout';
 
-@connect(selector, (dispatch) => ({
+@connect((state) => ({
+    quotes: selector(state)
+}), (dispatch) => ({
     actions: bindActionCreators(actionCreators, dispatch)
 }))
 export default class QuotesView extends Component {
