@@ -2,10 +2,10 @@
 // This is the exposed surface where modules can interface with each other.
 
 export {
-  default,
-  actionCreators,
-  selector,
-  NAME
+    default,
+    actionCreators,
+    selector,
+    NAME
 } from './quotes';
 
-export { default as QuotesView } from './QuotesView'
+export {default as QuotesView} from './QuotesView'

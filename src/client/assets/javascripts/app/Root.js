@@ -1,11 +1,11 @@
 // @flow
 
-import React, { PropTypes } from 'react';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import React, {PropTypes} from 'react';
+import {Provider} from 'react-redux';
+import {Router} from 'react-router';
 
 import routes from './routes';
-import { SENTRY_URL } from './config';
+import {SENTRY_URL} from './config';
 
 // If you use React Router, make this component
 // render <Router> with your routes. Currently,

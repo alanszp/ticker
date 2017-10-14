@@ -11,7 +11,7 @@ const App = (props) => {
             </div>
         </div>
     );
-}
+};
 
 App.propTypes = {
     children: PropTypes.element.isRequired

@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import { connect } from 'react-redux';
-import { actionCreators, selector } from '../../quotes';
-import { bindActionCreators } from 'redux';
-import { TextField, Menu, MenuItem } from 'material-ui';
-import { Link } from 'react-router';
+import {connect} from 'react-redux';
+import {actionCreators, selector} from '../../quotes';
+import {bindActionCreators} from 'redux';
+import {TextField, Menu, MenuItem} from 'material-ui';
+import {Link} from 'react-router';
 
 import './QuotesSelection.scss'
 
@@ -24,7 +24,7 @@ export default class QuotesSelection extends Component {
     };
 
     state = {
-      open: false,
+        open: false,
     };
 
     handleTextChange(e) {
@@ -33,12 +33,12 @@ export default class QuotesSelection extends Component {
     }
 
     handleRequestClose() {
-        this.setState({open:false});
+        this.setState({open: false});
     }
 
     handleSelectQuote(ticker) {
         console.log(ticker);
-        this.setState({open:false});
+        this.setState({open: false});
     }
 
     menuContent() {
@@ -76,7 +76,7 @@ export default class QuotesSelection extends Component {
                     label="Search for a quote"
                     value={ this.props.search.term }
                     ref={(input) => { this.textInput = input }}
-                    onChange={this.handleTextChange.bind(this)} />
+                    onChange={this.handleTextChange.bind(this)}/>
 
                 <Menu
                     id="simple-menu"
