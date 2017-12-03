@@ -12,8 +12,20 @@ function* searchQuote(action) {
         yield put(actionCreators.quoteRequestFailed(action.search, e));
     }
 }
+
+
+function* quoteInfo(action) {
+    try {
+        const quotes = yield call(QuoteService.chart, action.ticker);
+        yield put(actionCreators.getQuoteSuceed(action.ticker, quotes));
+    } catch (e) {
+        yield put(actionCreators.getQuoteFailed(action.ticker, e));
+    }
+}
+
 const saga = [
     takeLatest(actions.SEARCH_QUOTE_REQUEST, searchQuote),
+    takeLatest(actions.GET_QUOTE_REQUEST, quoteInfo),
 ];
 
 function* watchSearch() {

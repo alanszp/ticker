@@ -26,12 +26,22 @@ export default class QuotesSelection extends Component {
         actions: PropTypes.object.isRequired
     };
 
-    handleTextChange(value) {
-        this.props.actions.quoteSearch(value);
+    handleTextChange(value, menu, context) {
+        console.log(arguments)
+        if (value === '') {
+            return this.props.actions.resetQuoteSearch();
+        }
+
+        if (context.source === 'change') {
+            this.props.actions.quoteSearch(value);
+        }
     }
 
     handleSelectQuote(selected) {
-        this.props.router.push('/quotes/'+selected.data.symbol.toLowerCase())
+        if (selected.data && selected.data.symbol) {
+            this.props.actions.resetQuoteSearch();
+            this.props.router.push('/quotes/'+selected.data.symbol.toLowerCase());
+        }
     }
 
     menuContent() {
@@ -86,6 +96,7 @@ export default class QuotesSelection extends Component {
                     onNewRequest={this.handleSelectQuote.bind(this)}
                     openOnFocus={false}
                     fullWidth={true}
+                    searchText={this.props.search.term}
                 />
             </div>
         );

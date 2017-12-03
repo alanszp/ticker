@@ -16,3 +16,20 @@ export const search = function search(serarchString) {
             return filter(resp.data.items, (e) => e.typeDisp == 'Equity')
         });
 };
+
+export const chart = function chart(ticker) {
+    let options = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'default'
+    };
+    let queryParams = 'range=1d&includePrePost=true&interval=2m&corsDomain=finance.yahoo.com&.tsrc=finance';
+
+    return fetch('https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/' + ticker + '?' + queryParams, options)
+        .then((resp) => {
+            return resp.json();
+        })
+        .then((resp) => {
+            return resp.chart.result[0];
+        });
+};

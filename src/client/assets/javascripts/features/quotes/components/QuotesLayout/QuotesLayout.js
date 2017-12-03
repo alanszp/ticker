@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import QuoteSelection from '../QuotesSelection';
+import QuotesDetail from '../QuotesDetail';
 
 export default class QuotesLayout extends Component {
     static propTypes = {
@@ -11,6 +12,7 @@ export default class QuotesLayout extends Component {
         return (
             <div className="layout">
                 <QuoteSelection />
+                <QuotesDetail />
             </div>
         );
     }
