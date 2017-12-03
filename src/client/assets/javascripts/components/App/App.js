@@ -1,15 +1,21 @@
 import React, {PropTypes} from 'react';
-
 import Header from 'components/Header';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+const muiTheme = getMuiTheme();
+
 
 const App = (props) => {
     return (
-        <div className="app">
-            <Header />
-            <div className="content container">
-                {React.cloneElement({...props}.children, {...props})}
+        <MuiThemeProvider muiTheme={muiTheme}>
+            <div className="app">
+                <Header />
+                <div className="content container">
+                    {React.cloneElement({...props}.children, {...props})}
+                </div>
             </div>
-        </div>
+        </MuiThemeProvider>
     );
 };
 

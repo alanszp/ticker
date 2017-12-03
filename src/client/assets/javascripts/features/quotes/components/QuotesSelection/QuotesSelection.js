@@ -2,11 +2,12 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {actionCreators, selector} from '../../quotes';
 import {bindActionCreators} from 'redux';
-import {TextField, Menu, MenuItem} from 'material-ui';
-import {Link} from 'react-router';
+import {AutoComplete, MenuItem} from 'material-ui';
+import {withRouter} from 'react-router';
 
 import './QuotesSelection.scss'
 
+@withRouter
 @connect(
     (state) => {
         return {
@@ -23,71 +24,68 @@ export default class QuotesSelection extends Component {
         actions: PropTypes.object.isRequired
     };
 
-    state = {
-        open: false,
-    };
-
-    handleTextChange(e) {
-        this.props.actions.quoteSearch(e.target.value);
-        this.setState({open: true});
+    handleTextChange(value) {
+        this.props.actions.quoteSearch(value);
     }
 
-    handleRequestClose() {
-        this.setState({open: false});
-    }
-
-    handleSelectQuote(ticker) {
-        console.log(ticker);
-        this.setState({open: false});
+    handleSelectQuote(selected) {
+        this.props.router.push('/quotes/'+selected.data.symbol.toLowerCase())
     }
 
     menuContent() {
-        if (this.props.search.loading) {
-            return (
-                <MenuItem key="0">Loading...</MenuItem>
-            );
-        }
-        if (this.props.search.loaded && this.props.search.items.length == 0) {
-            return (
-                <MenuItem key="0">No matching stocks. Please search again</MenuItem>
-            );
-        }
-        if (this.props.search.loaded && this.props.search.items.length != 0) {
+        if (this.props.search.items && this.props.search.items.length != 0) {
             return this.props.search.items.map((stock, index) => {
-                return (
-                    <Link
-                        key={index}
-                        className="logo" to={'/quotes/'+stock.symbol.toLowerCase()}>
+                return {
+                    text: stock.symbol,
+                    value: (
                         <MenuItem
-                            onClick={this.handleSelectQuote.bind(this, stock.symbol)}
-                        >{stock.symbol}</MenuItem>
-                    </Link>
-                );
+                            primaryText={stock.symbol}
+                            secondaryText={stock.name}
+                        />
+                    ),
+                    data: stock
+                };
             })
         }
-        return null
+        if (this.props.search.loading) {
+            return [{
+                text: '',
+                value: (
+                    <MenuItem
+                        primaryText="Loading..."
+                        secondaryText="Keep calm"
+                    />
+                ),
+            }];
+        }
+        if (this.props.search.loaded && this.props.search.items.length == 0) {
+            return [{
+                text: '',
+                value: (
+                    <MenuItem
+                        primaryText="No matching stocks."
+                        secondaryText="Please search again"
+                    />
+                ),
+            }];
+        }
+        return []
     }
 
     render() {
         return (
             <div className="quotes-selection">
-                <TextField
+                <AutoComplete
+                    hintText="Search for a quote"
                     className="search"
-                    label="Search for a quote"
-                    value={ this.props.search.term }
-                    ref={(input) => { this.textInput = input }}
-                    onChange={this.handleTextChange.bind(this)}/>
-
-                <Menu
-                    id="simple-menu"
-                    anchorEl={this.textInput}
-                    open={this.state.open}
-                    onRequestClose={this.handleRequestClose.bind(this)}
-                >
-                    {this.menuContent()}
-                </Menu>
+                    filter={AutoComplete.noFilter}
+                    dataSource={this.menuContent()}
+                    onUpdateInput={this.handleTextChange.bind(this)}
+                    onNewRequest={this.handleSelectQuote.bind(this)}
+                    openOnFocus={false}
+                    fullWidth={true}
+                />
             </div>
-
         );
     }
 }
