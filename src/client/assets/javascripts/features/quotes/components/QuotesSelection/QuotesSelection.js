@@ -9,9 +9,10 @@ import './QuotesSelection.scss'
 
 @withRouter
 @connect(
-    (state) => {
+    (state, ownProps) => {
         return {
-            search: selector(state).quotes.search
+            search: selector(state).quotes.search,
+            routeParams: ownProps.params
         }
     },
     (dispatch) => ({
@@ -21,6 +22,7 @@ import './QuotesSelection.scss'
 export default class QuotesSelection extends Component {
     static propTypes = {
         search: PropTypes.object.isRequired,
+        routeParams: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired
     };
 
@@ -76,7 +78,7 @@ export default class QuotesSelection extends Component {
         return (
             <div className="quotes-selection">
                 <AutoComplete
-                    hintText="Search for a quote"
+                    hintText={this.props.routeParams.quote ? this.props.routeParams.quote.toUpperCase() : "Search for a quote"}
                     className="search"
                     filter={AutoComplete.noFilter}
                     dataSource={this.menuContent()}
