@@ -26,7 +26,9 @@ export default class QuotesDetail extends Component {
     };
 
     init(quote) {
-        this.props.actions.getQuote(quote);
+        if (quote) {
+            this.props.actions.getQuote(quote);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
